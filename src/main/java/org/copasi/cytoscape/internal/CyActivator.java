@@ -10,8 +10,7 @@ import org.cytoscape.work.ServiceProperties;
 import org.cytoscape.work.TaskFactory;
 import org.osgi.framework.BundleContext;
 
-import org.copasi.cytoscape.internal.tasks.MyAppTaskFactory;
-import org.copasi.cytoscape.internal.tasks.MySelectionListener;
+import org.copasi.cytoscape.internal.tasks.CopasiImportTaskFactory;
 
 /**
  * {@code CyActivator} is a class that is a starting point for OSGi bundles.
@@ -61,7 +60,7 @@ public class CyActivator extends AbstractCyActivator {
 		properties.put(ServiceProperties.TITLE, "Import COPASI file");
 
 
-		TaskFactory myFactory = new MyAppTaskFactory(networkManager, networkFactory); 
+		TaskFactory myFactory = new CopasiImportTaskFactory(networkManager, networkFactory); 
 
 		registerService(context,
 			myFactory,

@@ -1,11 +1,8 @@
 package org.copasi.cytoscape.internal.tasks;
 
-import java.awt.Color;
-import java.awt.Paint;
 import java.util.Arrays;
-import java.util.List;
 
-import org.cytoscape.model.CyColumn;
+import org.COPASI.CVersion;
 import org.cytoscape.model.CyEdge;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNetworkFactory;
@@ -14,20 +11,13 @@ import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyTable;
 import org.cytoscape.work.AbstractTask;
 import org.cytoscape.work.ProvidesTitle;
-import org.cytoscape.work.TaskFactory;
-import org.cytoscape.work.TaskIterator;
 import org.cytoscape.work.TaskMonitor;
-import org.cytoscape.work.Tunable;
 
-import org.COPASI.*;
-
-import java.lang.System;
-
-public class MyAppTask extends AbstractTask {
+public class CopasiImportTask extends AbstractTask {
 	final CyNetworkManager netManager;
 	final CyNetworkFactory netFactory;
 
-	public MyAppTask(CyNetworkManager networkManager, CyNetworkFactory networkFactory) {
+	public CopasiImportTask(CyNetworkManager networkManager, CyNetworkFactory networkFactory) {
 		super();
 		netManager = networkManager;
 		netFactory = networkFactory;
