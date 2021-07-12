@@ -8,7 +8,7 @@ Running:
 
 	mvn package
 
-from the checked out project, will produce a file `./target/CopasiPlugin-1.0.jar`, that then can be manually added to cytoscape. For this to work, the native library of the COPASI Java bindings needs to be in the `java.library.path`. 
+from the checked out project, will produce a file `./target/CopasiPlugin-1.0.jar`, that then can be manually added to cytoscape. For this to work, the native library of the COPASI Java bindings needs to be in the `java.library.path` (On windows any directory in the `PATH` will do, on Linux `/usr/lib` will work). 
 
 ### Creating an artifact from the bindings
 The COPASI bindings consist of a `copasi.jar` file and a corresponding shared library. To be able to use them the maven command: 
