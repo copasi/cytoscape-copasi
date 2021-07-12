@@ -2,15 +2,20 @@ package org.copasi.cytoscape.internal;
 
 import java.util.Properties;
 
-import org.cytoscape.application.CyApplicationManager;
+import org.cytoscape.application.swing.CyAction;
+import org.cytoscape.application.swing.CySwingApplication;
+import org.cytoscape.io.util.StreamUtil;
 import org.cytoscape.model.CyNetworkFactory;
-import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.service.util.AbstractCyActivator;
+import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
+import org.cytoscape.util.swing.FileUtil;
+import org.cytoscape.view.layout.CyLayoutAlgorithmManager;
+import org.cytoscape.view.model.CyNetworkViewFactory;
 import org.cytoscape.work.ServiceProperties;
-import org.cytoscape.work.TaskFactory;
+import org.cytoscape.work.SynchronousTaskManager;
 import org.osgi.framework.BundleContext;
-
-import org.copasi.cytoscape.internal.tasks.CopasiImportTaskFactory;
+import org.copasi.cytoscape.internal.actions.ImportAction;
+import org.copasi.cytoscape.internal.tasks.CopasiReaderTaskFactory;
 
 /**
  * {@code CyActivator} is a class that is a starting point for OSGi bundles.
@@ -47,24 +52,33 @@ public class CyActivator extends AbstractCyActivator {
 	public void start(BundleContext context) throws Exception {
 		// Get the services we're going to want to use
 		CyNetworkFactory networkFactory = getService(context, CyNetworkFactory.class);
-		CyNetworkManager networkManager = getService(context, CyNetworkManager.class);
+        CySwingApplication cySwingApplication = getService(context, CySwingApplication.class);
+        CyNetworkViewFactory cyNetworkViewFactory = getService(context, CyNetworkViewFactory.class);
+        CyLayoutAlgorithmManager cyLayoutAlgorithmManager = getService(context, CyLayoutAlgorithmManager.class);
+        FileUtil fileUtil = getService(context, FileUtil.class);
+        StreamUtil streamUtil = getService(context, StreamUtil.class);
+        LoadNetworkFileTaskFactory loadNetworkFileTaskFactory = getService(context, LoadNetworkFileTaskFactory.class);
+        @SuppressWarnings("rawtypes")
+        SynchronousTaskManager synchronousTaskManager = getService(context, SynchronousTaskManager.class);
+
 
 		// Configure the service properties first.
 		Properties properties = new Properties();
-
-		// Our task should be exposed in the "Apps" menu...
 		properties.put(ServiceProperties.PREFERRED_MENU,
 			"Apps.COPASI");
-
-		// ... as a sub menu item called "Import".
 		properties.put(ServiceProperties.TITLE, "Import COPASI file");
+			
+        ImportAction importAction = new ImportAction(cySwingApplication, fileUtil, loadNetworkFileTaskFactory, synchronousTaskManager);
+        registerService(context, importAction, CyAction.class, properties);
+        
+        // COPASI reader 
+        CopasiFileFilter copasiFilter = new CopasiFileFilter(streamUtil);
+        CopasiReaderTaskFactory copasiReaderTaskFactory = new CopasiReaderTaskFactory(copasiFilter, networkFactory, cyNetworkViewFactory, cyLayoutAlgorithmManager);
+        Properties copasiReaderProps = new Properties();
+        copasiReaderProps.setProperty("readerDescription", "COPASI file reader (copasi)");
+        copasiReaderProps.setProperty("readerId", "copasiNetworkReader");
+        registerAllServices(context, copasiReaderTaskFactory, copasiReaderProps);
 
-
-		TaskFactory myFactory = new CopasiImportTaskFactory(networkManager, networkFactory); 
-
-		registerService(context,
-			myFactory,
-			TaskFactory.class, // Interface
-			properties); // Service properties
+		
 	}
 }

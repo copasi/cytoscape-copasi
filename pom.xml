@@ -25,7 +25,10 @@
     -->
   <groupId>org.copasi</groupId>
   <artifactId>CopasiPlugin</artifactId>
+  <description>A Cytoscape app for COPASI.</description>
   <version>1.0</version>
+  <url>https://github.com/copasi/cytoscape-copasi</url>
+  
 
     <!--
     "packaging" tells Maven what sort of thing you want to build.
@@ -155,7 +158,36 @@
       <artifactId>work-api</artifactId>
       <version>${cytoscape.api.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>swing-application-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>swing-util-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>io-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <scope>provided</scope>
+     </dependency>
+     <dependency>
+       <groupId>org.cytoscape</groupId>
+       <artifactId>core-task-api</artifactId>
+       <version>${cytoscape.api.version}</version>
+       <scope>provided</scope>
+     </dependency>
+     <dependency>
+        <groupId>org.cytoscape</groupId>
+        <artifactId>layout-api</artifactId>
+        <version>${cytoscape.api.version}</version>
+        <scope>provided</scope>
+      </dependency>
     <!-- OSGi core API -->
     <dependency>
       <groupId>org.osgi</groupId>
